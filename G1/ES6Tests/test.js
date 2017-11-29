@@ -37,7 +37,18 @@ var foo =()=>{
 foo();
 
 let btn = document.getElementById("b1");
-btn.addEventListener("click",()=>{
+btn.addEventListener("click",(ev)=>{
    console.log("Clicked Button");
    console.log(this);
+   console.log(ev.currentTarget);
 });
+
+let arr = [1,2,3,4];
+
+for(let i=0; i<arr.length;i++){
+    console.log(arr[i]);
+}
+
+for(let val of arr){
+    console.log(val);
+}
