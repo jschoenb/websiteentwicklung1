@@ -9,7 +9,6 @@ class Message {
     print(userId, parent,contactList) {
         let username ="";
         if(this.isGroupMsg && userId !== this.senderId){
-            console.log(this.senderId);
             username = "<b>"+contactList.getContactById(this.senderId).name + "</b></br>";
         }
         let html = $('<div class="chatmessage '+(userId===this.senderId?'me':'others')+'">'+

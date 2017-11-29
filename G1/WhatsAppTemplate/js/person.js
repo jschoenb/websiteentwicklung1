@@ -1,6 +1,11 @@
-class Person extends Contact{
-    constructor(id,name,image,online){
-        super(id,name,image)
+class Person extends Contact {
+    constructor(id,name,img, online){
+        super(id,name,img);
         this.online = online;
+        this.groups = []
+    }
+
+    addGroup(group) {
+        this.groups.push(group);
     }
 }

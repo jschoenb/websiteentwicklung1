@@ -18,6 +18,12 @@ class WhatsApp {
                 console.log(contact);
                 this.contactList.addContact(contact);
             }
+            for(let group of data.groups) {
+                let g = new Group(group.id, group.name, group.img);
+                this.contactList.addContact(g);
+            }
+
+            this.contactList.printContactList();
         });
     }
 }
