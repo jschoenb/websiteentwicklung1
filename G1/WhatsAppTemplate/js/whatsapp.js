@@ -2,10 +2,36 @@ class WhatsApp {
     constructor(){
         this.contactList = new ContactList();
         this.personnelId = undefined;
+        this.currentChatPartner = undefined;
     }
 
     init(){
         this.loadFromJSON();
+        this.addEventHandler();
+    }
+
+    addEventHandler(){
+        //Handler anlegen
+        $("#chatlist").on("click",".chatinfo",(e)=>{
+            //Eingabefeld einblenden
+            $(".chatinput").show();
+            //alte Chats löschen
+            $(".chatmessage").remove();
+            //raus finden (über die DOM Id) welcher Kontakt gelickt wurde
+            //um das Objekt zu finden
+            let id = e.currentTarget.id;
+            //contact_2
+            let index = id.lastIndexOf("_");
+            id = id.substring(index+1);
+            let selectedContact = this.contactList.getContactById(Number(id));
+            this.currentChatPartner = selectedContact;
+            //Nachrichten anzeigen
+            selectedContact.printMessages(this.personnelId,$("#chatbody>div"),this.contactList);
+            //Header aktualisieren
+            selectedContact.printHeader();
+            $(e.currentTarget).removeClass("new-message");
+        });
+
     }
 
     loadFromJSON(){
