@@ -2,10 +2,28 @@ class WhatsApp {
     constructor(userId){
         this.userId = userId;
         this.contactList = new ContactList();
+        this.currentChatPartner = undefined;
     }
 
     init(){
        this.loadFromJSON();
+       this.addEventHandler();
+    }
+
+    addEventHandler(){
+        $("#chatlist").on("click",".chatinfo",(e)=>{
+            console.log(e.currentTarget);
+            let id = e.currentTarget.id;
+            let index = id.lastIndexOf("_");
+            id = id.substring(index+1);
+            this.currentChatPartner = this.contactList.getContactById(Number(id));
+            $(".chatinput").show();
+            $(".chatmessage").remove();
+            this.currentChatPartner.printMessages(this.userId,
+                $("#chatbody>div"),this.contactList);
+            this.currentChatPartner.printHeader();
+            $(e.currentTarget).removeClass("new-message");
+        });
     }
 
     loadFromJSON(){
