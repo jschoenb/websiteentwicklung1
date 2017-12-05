@@ -24,6 +24,27 @@ class WhatsApp {
             this.currentChatPartner.printHeader();
             $(e.currentTarget).removeClass("new-message");
         });
+
+        $(".chatinput").hide();
+        $("#chatinput").keyup((ev)=>{
+           if(ev.which == 13 || ev.keyCode == 13){
+               this.insertMessage($(ev.currentTarget).val(),this.userId,this.currentChatPartner.id);
+               $(ev.currentTarget).val("");
+           }
+        });
+    }
+
+    insertMessage(text,senderId, receiverId){
+        let currentDate = new Date();
+        let datetime = currentDate.getHours()+":"+currentDate.getMinutes();
+        let receiverContact = this.contactList.getContactById(receiverId);
+        let msg = new Message(text,datetime,senderId,receiverContact instanceof Group);
+        receiverContact.addMessage(msg);
+        if(this.currentChatPartner && this.currentChatPartner.id == receiverId){
+            msg.print(this.userId,$("#chatbody>div"),this.contactList);
+        } else {
+            $(receiverContact.contactDiv).addClass("new-message");
+        }
     }
 
     loadFromJSON(){
