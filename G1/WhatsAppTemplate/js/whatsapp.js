@@ -32,7 +32,30 @@ class WhatsApp {
             $(e.currentTarget).removeClass("new-message");
         });
 
+        $(".chatinput").hide();
+        $("#chatinput").keyup((ev)=>{
+           if(ev.which == 13 || ev.keyCode == 13){
+               this.insertMessage($(ev.currentTarget).val(),this.personnelId,this.currentChatPartner.id);
+               $(ev.currentTarget).val("");
+           }
+        });
+
     }
+
+    insertMessage(text,senderId,receiverId){
+        let currentDate = new Date();
+        let dateTime = currentDate.getHours() + ":"+currentDate.getMinutes();
+        let receiverContact = this.contactList.getContactById(receiverId);
+        let msg = new Message(text,dateTime,senderId, receiverContact instanceof Group);
+        receiverContact.addMessage(msg);
+        if(this.currentChatPartner && this.currentChatPartner.id == receiverId){
+            //Nachricht an aktuell ausgewählten Kontakt
+            msg.print(this.personnelId,$("#chatbody>div"),this.contactList);
+        } else {
+            $(receiverContact.contactDiv).addClass("new-message");
+        }
+    }
+
 
     loadFromJSON(){
         //let that = this;
