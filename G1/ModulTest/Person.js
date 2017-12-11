@@ -1,3 +1,4 @@
+
 let internal = Symbol();
 
 export default class Person {

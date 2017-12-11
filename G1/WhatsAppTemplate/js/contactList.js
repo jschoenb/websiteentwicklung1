@@ -1,4 +1,4 @@
-class ContactList {
+export default class ContactList {
     constructor(){
         this.contactList=[];
     }

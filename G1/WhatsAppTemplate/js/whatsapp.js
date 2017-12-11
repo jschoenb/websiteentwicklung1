@@ -1,4 +1,14 @@
-class WhatsApp {
+import ContactList from './contactList.js';
+import Person from './person.js';
+import * as WhatsAppGroup from './group.js';
+import Message from './message.js';
+
+//private Methods
+let loadFromJSON = Symbol();
+let addEventHandler = Symbol();
+let addMessageToContact = Symbol();
+
+export default class WhatsApp {
     constructor(){
         this.contactList = new ContactList();
         this.personnelId = undefined;
@@ -6,11 +16,11 @@ class WhatsApp {
     }
 
     init(){
-        this.loadFromJSON();
-        this.addEventHandler();
+        this[loadFromJSON]();
+        this[addEventHandler]();
     }
 
-    addEventHandler(){
+    [addEventHandler](){
         //Handler anlegen
         $("#chatlist").on("click",".chatinfo",(e)=>{
             //Eingabefeld einblenden
@@ -46,7 +56,7 @@ class WhatsApp {
         let currentDate = new Date();
         let dateTime = currentDate.getHours() + ":"+currentDate.getMinutes();
         let receiverContact = this.contactList.getContactById(receiverId);
-        let msg = new Message(text,dateTime,senderId, receiverContact instanceof Group);
+        let msg = new Message(text,dateTime,senderId, receiverContact instanceof WhatsAppGroup.Group);
         receiverContact.addMessage(msg);
         if(this.currentChatPartner && this.currentChatPartner.id == receiverId){
             //Nachricht an aktuell ausgewählten Kontakt
@@ -57,7 +67,7 @@ class WhatsApp {
     }
 
 
-    loadFromJSON(){
+    [loadFromJSON](){
         //let that = this;
         $.getJSON("json/contacts.json",(data)=>{
             console.log(this);
@@ -66,12 +76,12 @@ class WhatsApp {
                 let contact = new Person(person.id,person.name,person.img,person.online);
                 console.log(contact);
                 this.contactList.addContact(contact);
-                this.addMessageToContact(contact,person,false);
+                this[addMessageToContact](contact,person,false);
             }
             for(let group of data.groups) {
-                let g = new Group(group.id, group.name, group.img);
+                let g = new WhatsAppGroup.Group(group.id, group.name, group.img);
                 this.contactList.addContact(g);
-                this.addMessageToContact(g,group,true);
+                this[addMessageToContact](g,group,true);
                 for(let contactId of group.members){
                     if(contactId !== this.personnelId){
                         let c = this.contactList.getContactById(contactId);
@@ -87,7 +97,7 @@ class WhatsApp {
         });
     }
 
-    addMessageToContact(contact,jsonContact,isGroupMsg){
+    [addMessageToContact](contact,jsonContact,isGroupMsg){
         for(let msg of jsonContact.messages){
             let message = new Message(msg.text,msg.time,msg.senderId,isGroupMsg);
             contact.addMessage(message);

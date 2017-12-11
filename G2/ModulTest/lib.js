@@ -1,6 +1,6 @@
 const  sqrt = Math.sqrt;
 
-function square(x){
+export function square(x){
     return x*x;
 }
 

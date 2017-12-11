@@ -1,4 +1,6 @@
-class Group extends Contact {
+import Contact from './contact.js';
+
+export class Group extends Contact {
     constructor(id, name, img) {
         super(id, name, img);
         this.contacts = [];

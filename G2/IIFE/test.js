@@ -5,5 +5,10 @@
 //Tests
 //=================================================
 
+var p2 = new person("Hannes","Schönböck");
+console.log(p2);
+p2.print();
+
+doSth();
 
 

@@ -2,7 +2,7 @@
  * Created by p23460 on 15.09.2016.
  */
 
-//var lib =(function(lib) {
+var lib =(function(lib) {
     function Person(fn, ln) {
         this.firstName = fn;
         this.lastName = ln;
@@ -21,14 +21,21 @@
         return this.lastName;
     }
 
-    Person.prototype.setFirstName= function (fn) {
+    Person.prototype.setFirstName = function (fn) {
         this.firstName = fn;
     }
 
+    function doSth() {
+        console.log("I did sth really important");
+    }
+
+
     //return the whole object
-  //  lib.Person = Person;
-  //  return lib;
-//})(lib ||{})
+    //öffentliche API
+    lib.Person = Person;
+    //lib.doSth = doSth;
+    return lib;
+})(lib || {})
 //=================================================
 
 

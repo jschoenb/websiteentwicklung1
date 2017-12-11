@@ -2,7 +2,7 @@
  * Created by p23460 on 15.09.2016.
  */
 
-//var lib =(function(lib) {
+var lib =(function(lib) {
     function Person(fn, ln) {
         this.firstName = fn;
         this.lastName = ln;
@@ -26,9 +26,9 @@
     }
 
     //return the whole object
-  //  lib.Person = Person;
-  //  return lib;
-//})(lib ||{})
+    lib.Person = Person;
+    return lib;
+})(lib ||{})
 //=================================================
 
 
