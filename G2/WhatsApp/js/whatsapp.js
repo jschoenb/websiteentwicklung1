@@ -1,4 +1,14 @@
-class WhatsApp {
+import ContactList from './contactList.js';
+import Message from './message.js';
+import Person from './person.js';
+import Group from './group.js';
+
+//private Methoden
+let loadFromJSON = Symbol();
+let addEventHandler = Symbol();
+let addMessageToContact = Symbol();
+
+export default class WhatsApp {
     constructor(userId){
         this.userId = userId;
         this.contactList = new ContactList();
@@ -6,11 +16,11 @@ class WhatsApp {
     }
 
     init(){
-       this.loadFromJSON();
-       this.addEventHandler();
+       this[loadFromJSON]();
+       this[addEventHandler]();
     }
 
-    addEventHandler(){
+    [addEventHandler](){
         $("#chatlist").on("click",".chatinfo",(e)=>{
             console.log(e.currentTarget);
             let id = e.currentTarget.id;
@@ -47,16 +57,16 @@ class WhatsApp {
         }
     }
 
-    loadFromJSON(){
+    [loadFromJSON](){
         $.getJSON("json/contacts.json",(data) => {
            for(let person of data.persons){
                let contact = new Person(person.id,person.name,person.img,person.online);
                this.contactList.addContact(contact);
-               this.addMessageToContact(contact,person,false);
+               this[addMessageToContact](contact,person,false);
            }
            for(let group of data.groups){
                 let g = new Group(group.id,group.name, group.img);
-                this.addMessageToContact(g,group,true);
+                this[addMessageToContact](g,group,true);
                 for(let contactId of group.members){
                     if(contactId!=this.userId){
                         let c = this.contactList.getContactById(contactId);
@@ -72,7 +82,7 @@ class WhatsApp {
         });
     }
 
-    addMessageToContact(contact,jsonContact,isGroupMsg){
+    [addMessageToContact](contact,jsonContact,isGroupMsg){
         for(let msg of jsonContact.messages){
             let message = new Message(msg.text,msg.time,msg.senderId,isGroupMsg);
             contact.addMessage(message);
