@@ -11,17 +11,21 @@ window.onload=function () {
     });*/
 
 
-    var htmlHandler = function(oldVal, newVal){
+    var htmlHandler = function(param){
         console.log("Received change first name event");
         console.log(this);
-        $(this).append("<p>Changed first name form " + oldVal +
-            " to " + newVal);
+        $(this).append("<p>Changed first name form " + param.oldVal +
+            " to " + param.newVal);
     }
 
-    person.subscribe(div,htmlHandler);
+    person.subscribe("changedFirstName",div,htmlHandler);
+    person.subscribe("changedLastName",div,htmlHandler);
+
+    person.subscribe("changedFirstName",person,Person.prototype.print);
 
     person.setFirstName("Johannes");
+    person.setLastName("Schoenboeck");
 
-    //person.addEventListener("changeFirstName", function(){})
+
 
 }
