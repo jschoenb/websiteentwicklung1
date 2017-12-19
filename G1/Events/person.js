@@ -1,5 +1,9 @@
-export default class Person {
+import Subject from "./subject.js";
+
+
+export default class Person extends Subject{
     constructor (firstName,lastName){
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -13,14 +17,12 @@ export default class Person {
     setFirstName(newFirstName){
         let oldName = this.firstName;
         this.firstName = newFirstName;
-        //JS
-        let event = new CustomEvent("changeFirstName",
-            {'detail':{'old':oldName,'new': newFirstName}});
-        document.getElementById("eventDiv").dispatchEvent(event);
+        super.notifyObservers("changedFirstName",{"oldVal":oldName,"newVal":newFirstName});
+    }
 
-        //jQuery
-        //$("#eventDiv").trigger("changeFirstName",[oldName,newFirstName]);
-
-
+    setLastName(newLastName){
+        let oldName = this.lastName;
+        this.lastName = newLastName;
+        super.notifyObservers("changedLastName",{"oldVal":oldName,"newVal":newLastName});
     }
 }
