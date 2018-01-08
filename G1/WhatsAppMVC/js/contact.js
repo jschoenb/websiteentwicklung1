@@ -11,19 +11,5 @@ export default class Contact{
     addMessage(msg) {
         this.messages.push(msg);
     }
-
-    printHeader(){
-        $(".chatimage").attr("src",this.img);
-        $(".chatname").empty();
-        $(".chatname").append("<h2>"+this.name+"</h2>");
-    }
-
-
-
-    printMessages(userId,parent,contactList){
-        for(let m of this.messages){
-            m.print(userId,parent,contactList);
-        }
-    }
 }
 

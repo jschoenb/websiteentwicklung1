@@ -1,30 +1,10 @@
-export default class Person {
+import Subject from "./subject.js";
+
+export default class Person extends Subject{
     constructor(fn,ln){
+        super();
         this.firstName = fn;
         this.lastName = ln;
-        this.observers = [];
-    }
-
-    subscribe(observer,callbackFct){
-        this.observers.push({
-            obj:observer,
-            fct:callbackFct
-        });
-    }
-
-    unsubscribe(observer){
-        for(let i=0; i<this.observers.length;i++){
-            if(this.observers[i].obj == observer){
-                this.observers.splice(i,1);
-                break;
-            }
-        }
-    }
-
-    triggerEvent(oldVal,newVal){
-        for(let observer of this.observers){
-            observer.fct.call(observer.obj,oldVal,newVal);
-        }
     }
 
     print(){
@@ -36,6 +16,15 @@ export default class Person {
         let oldName = this.firstName;
         this.firstName = newFirstName;
 
-        this.triggerEvent(oldName,newFirstName);
+        super.notifyObservers("changedFirstName",{"oldVal":oldName,
+            "newVal":newFirstName});
+    }
+
+    setLastName(newLastName){
+        let oldName = this.lastName;
+        this.lastName = newLastName;
+
+        super.notifyObservers("changedLastName",{"oldVal":oldName,
+            "newVal":newLastName});
     }
 }

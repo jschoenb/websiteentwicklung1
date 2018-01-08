@@ -1,25 +1,24 @@
 export default class Subject {
-
     constructor(){
         //assoziativer Array mit Array
-        this.observers = [];
+        this.obversers = []
     }
 
-    subscribe(eventName,observer,callbackFct){
-        if(this.observers[eventName]==undefined){
-            this.observers[eventName]=[];
+    subscribe(eventName, listenerObj,callbackFct){
+        if(this.obversers[eventName]==undefined){
+            this.obversers[eventName] = [];
         }
-        this.observers[eventName].push({
-            obj:observer,
-            fct:callbackFct
+        this.obversers[eventName].push({
+            obj:listenerObj,
+            fct: callbackFct
         });
     }
 
-    unsubscribe(eventName,observer){
-        if(this.observers[eventName]!=undefined){
-            let observersForEvent = this.observers[eventName];
+    unscribe(eventName,listenerObj){
+        if(this.obversers[eventName]){
+        let observersForEvent = this.obversers[eventName];
             for(let i=0; i<observersForEvent.length;i++){
-                if(observersForEvent[i].obj == observer){
+                if(observersForEvent[i].obj == listenerObj){
                     observersForEvent.splice(i,1);
                     break;
                 }
@@ -27,8 +26,9 @@ export default class Subject {
         }
     }
 
-    notifyObservers(eventName,param){
-        let observersForEvent = this.observers[eventName];
+    notifyObservers
+    (eventName,param){
+        let observersForEvent = this.obversers[eventName];
         for(let observer of observersForEvent){
             observer.fct.call(observer.obj,param);
         }
