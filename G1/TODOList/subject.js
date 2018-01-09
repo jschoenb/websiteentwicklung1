@@ -8,6 +8,7 @@ export default class Subject {
         this.observers = [];
     }
 
+    //method used to add a listener/observer
     subscribe(topic, listenerObj, callbackFct) {
         if (this.observers[topic] == undefined) {
             this.observers[topic] = new Array();
@@ -18,6 +19,7 @@ export default class Subject {
         });
     }
 
+    //method used to remove a listener/observer
     unsubscribe(topic, listenerObj) {
         if(this.observers[topic]!=undefined){
             let observersForTopic = this.observers[topic];
@@ -31,6 +33,8 @@ export default class Subject {
         }
     }
 
+    //calls the registered callback of every observer;
+    // callback function reveices object in param as parameter
     notifyObservers(topic, param) {
         let observersForTopic = this.observers[topic];
         if(observersForTopic) {

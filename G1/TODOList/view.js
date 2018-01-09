@@ -10,26 +10,39 @@ let isChecked = Symbol();
 
 export class View {
     constructor(){
+        //encapsulate relevant DOM elements in common var
         this.DOM = {
             input: $('#todo-input'),
             list: $('#todo-list')
         }
     }
 
+    //returns the relevent DOM
     getDOM() {
         return this.DOM;
     }
 
-    addTask(task){
-       //TODO
+    //print an according task and append it to the list
+    printTask(task){
+       let html = this[getHTML](task);
+       this.DOM.list.append(html);
     }
 
+    //delete the DOM representation of a certain task
     deleteTask(task){
-        //TODO
+        $("#"+task.id).remove();
     }
 
+    //update the DOM representation of a certain task
     updateTask(task){
-        //TODO
+        let t = $("#"+task.id);
+        t.find(".check").prop("checked", task.complete);
+        if(task.complete){
+            t.css("background-color","grey");
+        } else {
+            t.css("background-color","white");
+        }
+
     }
     
     //==========private methods ===================
@@ -46,6 +59,7 @@ export class View {
     }
 }
 
+//Singleton pattern
 export function getInstance() {
     if(!view) {
         view = new View();

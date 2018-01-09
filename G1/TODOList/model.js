@@ -10,6 +10,7 @@ let toDoModel;
 class ToDoModel extends Subject {
     constructor() {
         super();
+        //list of tasks
         this.list = [];
     }
 
@@ -17,22 +18,47 @@ class ToDoModel extends Subject {
         return this.list;
     }
 
+    //adds a task into the list and notifies the observers
     add(text) {
-        //TODO
+        //simple JSON Task object - could also be implemented in own class
+        let task = {
+            id: ++ToDoModel.id,
+            val: text,
+            complete : false
+        }
+        this.list.push(task);
+        //throw the event named addTask and pass the param task
+        super.notifyObservers("addTask",task);
     }
 
     remove(taskId) {
-       //TODO
+       for(let i=0; i < this.list.length;i++){
+           if(this.list[i].id==taskId){
+               //throw the event named removeTask and pass the task as param
+               super.notifyObservers("removeTask",this.list[i]);
+               //remove the item from the array
+               this.list.splice(i,1);
+           }
+       }
     }
 
     complete(taskId, isComplete) {
-        //TODO
+        for(let i=0; i < this.list.length;i++){
+            if(this.list[i].id==taskId){
+                //change the completed property
+                this.list[i].complete = isComplete;
+                //throw the event named updateTask and pass the task as param
+                super.notifyObservers("updateTask",this.list[i]);
+            }
+        }
 
     }
 }
 
+//static variable to ensure unique value
 ToDoModel.id = 0;
 
+//Singleton pattern
 export function getInstance() {
     if(!toDoModel) {
         toDoModel = new ToDoModel();
