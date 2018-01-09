@@ -1,8 +1,4 @@
-/**
- *  View handle output to template.  On init gets DOM refs,
- *  and expose to controller.  When model calls notify(),
- *  View queries model for data and data performs pres. logic.
- */
+
 import {getInstance as Model} from "./model.js";
 import Person from "./person.js";
 
@@ -26,11 +22,13 @@ class View {
         return this.DOM;
     }
 
-    addContact(contact){
+    //callback method
+    printContact(contact){
         console.log(this);
         this[printContact](contact);
     }
 
+    //callback method
     contactChanged(param){
         $(".chatinput").show();
         //clear chat window
@@ -43,7 +41,7 @@ class View {
         $(param.elem).removeClass("new-message");
     }
 
-
+    //callback method
     messageReceived(param){
         if(param.currentChatPartner && param.currentChatPartner.id == param.receiver){
             this[printMessage](param.msg, param.userId,$("#chatbody>div"));
@@ -98,8 +96,10 @@ class View {
             '</div></div>');
         $("#chatlist").prepend(contactDiv);
     }
+
 }
 
+//Singleton pattern
 export function getInstance() {
     if(!view) {
         view = new View();
@@ -107,7 +107,3 @@ export function getInstance() {
     return view;
 }
 
-let model = Model();
-model.subscribe("addContact",getInstance(),View.prototype.addContact);
-model.subscribe("contactChanged",getInstance(),View.prototype.contactChanged);
-model.subscribe("newMessage",getInstance(),View.prototype.messageReceived);

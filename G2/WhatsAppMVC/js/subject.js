@@ -1,36 +1,43 @@
 export default class Subject {
     constructor(){
         //assoziativer Array mit Array
-        this.obversers = []
+        this.observers = []
     }
 
-    subscribe(eventName, listenerObj,callbackFct){
-        if(this.obversers[eventName]==undefined){
-            this.obversers[eventName] = [];
+//method used to add a listener/observer
+    subscribe(topic, listenerObj, callbackFct) {
+        console.log(this);
+        if (this.observers[topic] == undefined) {
+            this.observers[topic] = new Array();
         }
-        this.obversers[eventName].push({
-            obj:listenerObj,
-            fct: callbackFct
+        this.observers[topic].push({
+            obj: listenerObj,
+            fct: callbackFct,
         });
     }
 
-    unscribe(eventName,listenerObj){
-        if(this.obversers[eventName]){
-        let observersForEvent = this.obversers[eventName];
-            for(let i=0; i<observersForEvent.length;i++){
-                if(observersForEvent[i].obj == listenerObj){
-                    observersForEvent.splice(i,1);
-                    break;
+    //method used to remove a listener/observer
+    unsubscribe(topic, listenerObj) {
+        if(this.observers[topic]!=undefined){
+            let observersForTopic = this.observers[topic];
+            for (let i=0; i < observersForTopic.length;i++){
+                if(observersForTopic[i].obj === listenerObj){
+                    console.log("removing observer");
+                    observersForTopic.splice(i,1);
+                    return;
                 }
             }
         }
     }
 
-    notifyObservers
-    (eventName,param){
-        let observersForEvent = this.obversers[eventName];
-        for(let observer of observersForEvent){
-            observer.fct.call(observer.obj,param);
+    //calls the registered callback of every observer;
+    // callback function reveices object in param as parameter
+    notifyObservers(topic, param) {
+        let observersForTopic = this.observers[topic];
+        if(observersForTopic) {
+            for (let observer of observersForTopic) {
+                observer.fct.call(observer.obj, param);
+            }
         }
     }
 }

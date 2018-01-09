@@ -1,8 +1,15 @@
-//import {getInstance as Model} from "./model.js";
-import {getInstance as Controller} from "./controller.js";
-//import {getInstance as getView, View} from "./view.js";
+import {getInstance as getModel} from "./model.js";
+import {getInstance as getController} from "./controller.js";
+import {getInstance as getView} from "./view.js";
 
 
-//let model = Model();
-//let view = getView();
-window.controller = Controller();
+let model = getModel();
+let view = getView();
+window.controller = getController();
+
+//subscribe for events
+model.subscribe("addContact",view,view.printContact);
+model.subscribe("contactChanged",view,view.contactChanged);
+model.subscribe("newMessage",view,view.messageReceived);
+
+model.init();

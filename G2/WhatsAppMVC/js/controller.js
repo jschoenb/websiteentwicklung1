@@ -23,18 +23,20 @@ class Controller {
 
     [init](){
         let DOM = View().getDOM();
-        // input handler
+        // input handler - blur means filed looses focus
         DOM.input.blur(() => {
             Model().insertOwnMessage(DOM.input.val());
             DOM.input.val("");
         });
 
+        //key handler for keyboard (13 is return)
         DOM.input.keyup((ev) => {
             if (ev.which == 13 || ev.keyCode == 13) {
                 DOM.input.blur();
             }
         });
 
+        //event handler for contact list
         DOM.list.on('click','.chatinfo',(ev)=> {
             //fetch the contact
             let id = ev.currentTarget.id;
@@ -45,6 +47,7 @@ class Controller {
     }
 }
 
+//Singleton pattern
 export function getInstance() {
     if(!controller) {
         controller = new Controller();
