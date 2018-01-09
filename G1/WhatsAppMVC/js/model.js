@@ -21,6 +21,10 @@ class WhatsAppModel extends Subject {
         this.contactList = [];
         this.personnelId = undefined;
         this.currentChatPartner = undefined;
+    }
+
+    //method to initialize the model
+    init(){
         this[loadFromJSON]();
     }
 
@@ -28,6 +32,7 @@ class WhatsAppModel extends Subject {
         return this.contactList;
     }
 
+    //add a new contact object to list and throw event
     addContact(contact){
         this.contactList.push(contact);
         super.notifyObservers("addContact",contact);
@@ -42,6 +47,7 @@ class WhatsAppModel extends Subject {
         return undefined;
     }
 
+    //change the current selected contact object and throw event
     changeContact(newContactId,domElement){
         let selectedContact = this.getContactById(Number(newContactId));
         this.currentChatPartner = selectedContact;
@@ -49,6 +55,7 @@ class WhatsAppModel extends Subject {
     }
 
 
+    //insert a message object and throw event
     insertOwnMessage(text){
         var currentDate = new Date();
         var datetime = currentDate.getHours() + ":" + currentDate.getMinutes() ;
@@ -103,7 +110,7 @@ class WhatsAppModel extends Subject {
     }
 }
 
-
+//Singleton pattern
 export function getInstance() {
     if(!whatsAppModel) {
         whatsAppModel = new WhatsAppModel();

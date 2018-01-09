@@ -1,3 +1,4 @@
+//simple DAO (data access object)
 export default  class Message {
     constructor(text,time,senderId,isGroupMsg){
         this.text = text;
